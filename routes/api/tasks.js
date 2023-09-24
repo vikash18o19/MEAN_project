@@ -71,3 +71,23 @@ router.delete("/:id", async (req, res) => {
       .json({ message: "Error while deleting task", error: error });
   }
 });
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, completed } = req.body;
+    let response = await Tasks.findByIdAndUpdate(
+      { _id: id },
+      { title, description, completed }
+    );
+    if (response) {
+      res.status(200).json({ message: "task updated!", status: 200 });
+    } else {
+      res.json({ message: "task not found!" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error while updating task", error: error });
+  }
+});

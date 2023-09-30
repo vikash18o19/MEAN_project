@@ -3,94 +3,17 @@
 const express = require("express");
 
 const router = express.Router();
-
+const taskController = require("../controllers/taskController");
 const Tasks = require("../../models/tasks");
 
-router.post("/", async (req, res) => {
-  try {
-    let { title, description, userId } = req.body;
-    // console.log(content, endDate, userId);
-    title = title.trim();
-    let task = new Tasks({
-      title: title,
-      description: description,
-      userId: userId,
-    });
-    const savedTask = await task.save();
-    if (savedTask) {
-      res
-        .status(200)
-        .json({ message: "task created!", data: savedTask, status: 200 });
-    }
-  } catch (error) {
-    res.status(500).json({ message: "Error creating Tasks", error: error });
-  }
-});
+router.post("/", taskController.createTask);
 
-router.get("/", async (req, res) => {
-  try {
-    const { userId } = req.query;
-    let response = await Tasks.find({ userId: userId });
-    if (response) {
-      res.status(200).json({ data: response, status: 200 });
-    } else {
-      res.json({ message: "No tasks found!" });
-    }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error while loading tasks", error: error });
-  }
-});
+router.get("/", taskController.getAllTasks);
 
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    let response = await Tasks.find({ _id: id });
-    if (response) {
-      res.status(200).json({ data: response, status: 200 });
-    } else {
-      res.json({ message: "task not found!" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: "Error while loading task", error: error });
-  }
-});
+router.get("/:id", taskController.getTask);
 
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    let response = await Tasks.findByIdAndDelete({ _id: id });
-    if (response) {
-      res.status(200).json({ message: "task deleted!", status: 200 });
-    } else {
-      res.json({ message: "task not found!" });
-    }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error while deleting task", error: error });
-  }
-});
+router.delete("/:id", taskController.deleteTask);
 
-router.put("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, description, completed } = req.body;
-    let response = await Tasks.findByIdAndUpdate(
-      { _id: id },
-      { title, description, completed }
-    );
-    if (response) {
-      res.status(200).json({ message: "task updated!", status: 200 });
-    } else {
-      res.json({ message: "task not found!" });
-    }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error while updating task", error: error });
-  }
-});
+router.put("/:id", taskController.updateTask);
 
 module.exports = router;

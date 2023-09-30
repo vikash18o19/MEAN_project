@@ -2,20 +2,17 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/users");
 require("dotenv").config();
 
-//TODO: Expiration check
-
+// authentication middleware
 const authenticate = async (req, res, next) => {
   let token;
-  // console.log(req.headers);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
+    // checking the validity of token
     try {
-      // console.log("inside try");
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, "secret");
-      // console.log(decoded);
       req.user = await User.findById(decoded.userId);
       next();
     } catch (error) {

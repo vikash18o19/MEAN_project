@@ -1,8 +1,9 @@
+// router to handle task endpoints
+
 const express = require("express");
 
 const router = express.Router();
 
-const Users = require("../../models/users");
 const Tasks = require("../../models/tasks");
 
 router.post("/", async (req, res) => {
@@ -91,3 +92,5 @@ router.put("/:id", async (req, res) => {
       .json({ message: "Error while updating task", error: error });
   }
 });
+
+module.exports = router;

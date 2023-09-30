@@ -7,9 +7,6 @@ const { v4: uuidv4 } = require("uuid");
 const refreshTokenModel = require("../../models/refreshToken");
 const User = require("../../models/users");
 
-const protect = require("../../middlewares/authentication");
-const userController = require("../../controllers/userController");
-
 router.post("/signup", (req, res) => {
   console.log(req.body);
   let { name, phone, email, password } = req.body;
@@ -18,11 +15,12 @@ router.post("/signup", (req, res) => {
   email = email.trim();
   password = password.trim();
 
-  if (name == "" || email == "" || password == "") {
+  if (name == "" || phone == "" || email == "" || password == "") {
     return res
       .status(400)
       .json({ status: "FAILED", message: "Please enter all fields" });
   } else if (!/^[a-zA-Z ]*$/.test(name)) {
+    // regex for validating name
     res.status(400).json({
       status: "FAILED",
       message: "Invalid name entered",
@@ -149,7 +147,7 @@ router.post("/signin", (req, res) => {
               if (result) {
                 // Generate token and refresh token
                 const token = jwt.sign({ userId: user._id }, "secret", {
-                  expiresIn: "1h",
+                  expiresIn: "12h",
                 });
                 const refreshToken = uuidv4();
 
@@ -429,7 +427,5 @@ router.post("/reset-password", async (req, res) => {
     });
   }
 });
-
-router.get("/search", protect, userController.searchUsers);
 
 module.exports = router;

@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/user", UserRouter);
-// app.use("/tasks", authenticate, TaskRouter);
+app.use("/tasks", authenticate, TaskRouter);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the server for MEAN application");

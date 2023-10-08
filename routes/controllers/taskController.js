@@ -23,7 +23,7 @@ exports.createTask = async (req, res) => {
 
 exports.getAllTasks = async (req, res) => {
   try {
-    const { userId } = req.query;
+    const { userId } = req.body;
     let response = await Tasks.find({ userId: userId });
     if (response) {
       res.status(200).json({ data: response, status: 200 });

@@ -24,6 +24,7 @@ exports.createTask = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
   try {
     const { userId } = req.params;
+    console.log(userId);
     let response = await Tasks.find({ userId: userId });
     console.log(response);
     if (response) {

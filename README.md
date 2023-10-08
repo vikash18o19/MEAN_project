@@ -4,3 +4,8 @@
 
 ## Hosted on digital ocean
 
+## To locally run:
+-  clone the repository using ```git clone```
+-  ```npm install```
+-  ```npm run dev``` to run through nodemon
+  

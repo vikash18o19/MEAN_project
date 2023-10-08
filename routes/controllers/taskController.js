@@ -84,6 +84,7 @@ exports.updateTask = async (req, res) => {
       );
     }
     if (response) {
+      console.log("response: ", response, id, title, description, completed);
       res.status(200).json({ message: "task updated!", status: 200 });
     } else {
       res.json({ message: "task not found!" });

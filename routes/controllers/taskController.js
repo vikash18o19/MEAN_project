@@ -75,12 +75,12 @@ exports.updateTask = async (req, res) => {
     if (title === "" || description === "") {
       response = await Tasks.findByIdAndUpdate(
         { _id: id },
-        { title: title, description: description, completed: completed }
+        { completed: completed }
       );
     } else {
       response = await Tasks.findByIdAndUpdate(
         { _id: id },
-        { completed: completed }
+        { title: title, description: description, completed: completed }
       );
     }
     if (response) {

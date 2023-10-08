@@ -72,10 +72,18 @@ exports.updateTask = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, description, completed } = req.body;
-    let response = await Tasks.findByIdAndUpdate(
-      { _id: id },
-      { title, description, completed }
-    );
+    let response;
+    if (title === "" || description === "") {
+      response = await Tasks.findByIdAndUpdate(
+        { _id: id },
+        { title: title, description: description, completed: completed }
+      );
+    } else {
+      response = await Tasks.findByIdAndUpdate(
+        { _id: id },
+        { completed: completed }
+      );
+    }
     if (response) {
       res.status(200).json({ message: "task updated!", status: 200 });
     } else {
